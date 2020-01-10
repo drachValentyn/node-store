@@ -16,6 +16,7 @@ mongoose.connect('mongodb://localhost/mevn-users', {
   .then(() => console.log('connection succesful'))
   .catch((err) => console.error(err));
 
+
 const user = require('./routes/user');
 const app = express();
 

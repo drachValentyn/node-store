@@ -52,7 +52,9 @@ export default {
   },
   methods: {
     editUser (userid) {
-      this.$router.push(`/edit-user/` + userid);
+      console.log(userid)
+
+      this.$router.push('/edit-user/' + userid);
 
       // this.$router.push({
       //   name: 'EditUser',

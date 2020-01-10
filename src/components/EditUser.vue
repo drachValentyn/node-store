@@ -2,7 +2,7 @@
   <v-container>
     <h2>
       Edit User
-      <v-btn color="success" text :to="{ name: 'ShowUser', params: { id: user._id } }">(Show User)</v-btn>
+      <v-btn color="success" text :to="/show-user/ + user._id">(Show User)</v-btn>
     </h2>
 
     <v-form
@@ -18,7 +18,7 @@
         @input="$v.name.$touch()"
         @blur="$v.name.$touch()"
         required
-      ></v-text-field>
+      />
 
       <v-text-field
         v-model="login"
@@ -28,7 +28,7 @@
         @input="$v.login.$touch()"
         @blur="$v.login.$touch()"
         required
-      ></v-text-field>
+      />
 
       <v-text-field
         v-model="email"
@@ -37,14 +37,14 @@
         @input="$v.email.$touch()"
         @blur="$v.email.$touch()"
         required
-      ></v-text-field>
+      />
 
       <v-select
         v-model="select"
         :items="role"
         label="Role"
         required
-      ></v-select>
+      />
 
       <v-btn
         :disabled="!valid"
@@ -104,7 +104,7 @@
       },
     },
     created() {
-      axios.get(`http://localhost:4002/user/` + this.$route.params.id)
+      axios.get('http://localhost:4002/user/' + this.$route.params.id)
         .then(response => {
           let res = response.data;
             this.name = res.name;
@@ -143,19 +143,17 @@
       onSubmit () {
         this.$v.$touch();
         if (!this.$v.$invalid) {
-          console.log('yes');
+
           this.user = {
             name: this.name,
             login: this.login,
             email: this.email,
             role: this.select
           };
-          axios.post(`http://localhost:4002/user/`, this.user)
+          console.log(this.user);
+          axios.put(`http://localhost:4002/user/`+ this.$route.params.id, this.user)
             .then(response => {
-              this.$router.push({
-                name: 'ShowUser',
-                params: { id: this.$route.params.id }
-              })
+              this.$router.push('/show-user/' +  this.$route.params.id)
             })
             .catch(e => {
               this.errors.push(e)
