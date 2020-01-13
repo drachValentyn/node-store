@@ -1,15 +1,11 @@
 <template>
-
   <v-container>
-    <h2>
+    <h2 class="text-center">
       Add New User
     </h2>
 
-    <v-form
-      ref="form"
-      v-model="valid"
-      lazy-validation
-    >
+      <v-card class="pa-2 mx-auto" outlined  max-width="700">
+        <v-form ref="form" v-model="valid" lazy-validation>
       <v-text-field
         v-model="name"
         :error-messages="nameErrors"
@@ -18,7 +14,7 @@
         @input="$v.name.$touch()"
         @blur="$v.name.$touch()"
         required
-      ></v-text-field>
+      />
 
       <v-text-field
         v-model="login"
@@ -28,7 +24,7 @@
         @input="$v.login.$touch()"
         @blur="$v.login.$touch()"
         required
-      ></v-text-field>
+      />
 
       <v-text-field
         v-model="email"
@@ -37,51 +33,32 @@
         @input="$v.email.$touch()"
         @blur="$v.email.$touch()"
         required
-      ></v-text-field>
+      />
 
-      <v-select
-        v-model="select"
-        :items="role"
-        label="Role"
-        required
-      ></v-select>
-
-      <v-btn
-        :disabled="!valid"
-        color="success"
-        class="mr-4"
-        @click="onSubmit"
-      >
+      <v-btn :disabled="!valid" color="success" class="mr-4" @click="onSubmit">
         submit
       </v-btn>
-
     </v-form>
-  </v-container>
+      </v-card>
 
+  </v-container>
 </template>
 
 <script>
-import axios from 'axios'
-import { validationMixin } from 'vuelidate'
-import { required, maxLength, email } from 'vuelidate/lib/validators'
+import axios from "axios";
+import { validationMixin } from "vuelidate";
+import { required, maxLength, email } from "vuelidate/lib/validators";
 
 export default {
-  name: 'CreateUser',
-  data () {
+  name: "CreateUser",
+  data() {
     return {
       valid: false,
       user: {},
-      name: '',
-      login: '',
-      email: '',
-      select: null,
-      role: [
-        'Admin',
-        'Author',
-        'Subscriber',
-        'Editor',
-      ],
-    }
+      name: "",
+      login: "",
+      email: ""
+    };
   },
   mixins: [validationMixin],
 
@@ -97,61 +74,57 @@ export default {
     email: {
       required,
       email
-    },
-    select: {
-      required
-    },
+    }
   },
   computed: {
-    nameErrors () {
+    nameErrors() {
       const errors = [];
       if (!this.$v.name.$dirty) return errors;
-      !this.$v.name.maxLength && errors.push('Name must be at most 10 characters long');
-      !this.$v.name.required && errors.push('Name is required.');
-      return errors
+      !this.$v.name.maxLength &&
+        errors.push("Name must be at most 10 characters long");
+      !this.$v.name.required && errors.push("Name is required.");
+      return errors;
     },
-    loginErrors () {
+    loginErrors() {
       const errors = [];
       if (!this.$v.name.$dirty) return errors;
-      !this.$v.name.maxLength && errors.push('Login must be at most 10 characters long');
-      !this.$v.name.required && errors.push('Login is required.');
-      return errors
+      !this.$v.name.maxLength &&
+        errors.push("Login must be at most 10 characters long");
+      !this.$v.name.required && errors.push("Login is required.");
+      return errors;
     },
-    emailErrors () {
+    emailErrors() {
       const errors = [];
       if (!this.$v.email.$dirty) return errors;
-      !this.$v.email.email && errors.push('Must be valid e-mail');
-      !this.$v.email.required && errors.push('E-mail is required');
-      return errors
-    },
+      !this.$v.email.email && errors.push("Must be valid e-mail");
+      !this.$v.email.required && errors.push("E-mail is required");
+      return errors;
+    }
   },
   methods: {
-    onSubmit () {
+    onSubmit() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
         this.user = {
           name: this.name,
           login: this.login,
           email: this.email,
-          role: this.select
         };
-        axios.post(`http://localhost:4002/user/`, this.user)
+        axios
+          .post(`http://localhost:4002/user/`, this.user)
           .then(response => {
             this.$router.push({
-              name: 'ShowUser',
+              name: "ShowUser",
               params: { id: response.data._id }
-            })
+            });
           })
           .catch(e => {
-            this.errors.push(e)
-          })
+            this.errors.push(e);
+          });
       }
-
     }
   }
-}
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

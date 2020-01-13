@@ -1,41 +1,51 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import UserList from '@/components/UserList'
-import CreateUser from '@/components/CreateUser'
-import EditUser from '@/components/EditUser'
-import ShowUser from '@/components/ShowUser'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import UserList from "@/components/UserList";
+import CreateUser from "@/components/CreateUser";
+import EditUser from "@/components/EditUser";
+import ShowUser from "@/components/ShowUser";
+import Login from "@/components/Login";
+import Register from "@/components/Register";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
-    name: 'UserList',
+    path: "/",
+    name: "UserList",
     component: UserList
   },
   {
-    path: '/show-user/:id',
-    name: 'ShowUser',
+    path: "/show-user/:id",
+    name: "ShowUser",
     component: ShowUser
   },
   {
-    path: '/add-user',
-    name: 'CreateUser',
+    path: "/add-user",
+    name: "CreateUser",
     component: CreateUser
   },
   {
-    path: '/edit-user/:id',
-    name: 'EditUser',
+    path: "/edit-user/:id",
+    name: "EditUser",
     component: EditUser
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register
   }
 ];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
   routes
 });
 
-export default router
-
+export default router;
