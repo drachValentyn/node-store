@@ -3,7 +3,6 @@
     <v-layout align-center justify-center>
       <v-flex xs12 sm8 md4>
         <v-card class="elevation-12">
-
           <v-toolbar dark color="primary">
             <v-toolbar-title>Registration form</v-toolbar-title>
           </v-toolbar>
@@ -45,12 +44,10 @@
           </v-card-text>
 
           <v-card-actions>
-            <v-spacer/>
-            <v-btn
-              color="primary"
-              @click="onSubmit"
-              :disabled="!valid"
-            >Register</v-btn>
+            <v-spacer />
+            <v-btn color="primary" @click="onSubmit" :disabled="!valid"
+              >Register</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -59,57 +56,58 @@
 </template>
 
 <script>
-  import axios from "axios";
+import axios from "axios";
 
-  export default {
-    data () {
-      return{
-        username: '',
-        password: '',
-        confirmPassword: '',
-        register: {},
-        errors: [],
-        valid: false,
-        usernameRules:[
-          v => !!v || 'Username is required',
-          v => (v && v.length >= 4) || 'Username must be equal or more than 6 characters'
-        ],
-        passRules: [
-          v => !!v || 'Password is required',
-          v => (v && v.length >= 6) || 'Password must be equal or more than 6 characters'
-        ],
-        confirmPassRules: [
-          v => !!v || 'Password is required',
-          v => v === this.password || 'Password should match'
-        ],
-      }
-    },
-    methods: {
-      onSubmit(){
-        if (this.$refs.form.validate()) {
-          this.register = {
-            username : this.username,
-            password : this.password
-          };
+export default {
+  data() {
+    return {
+      username: "",
+      password: "",
+      confirmPassword: "",
+      register: {},
+      errors: [],
+      valid: false,
+      usernameRules: [
+        v => !!v || "Username is required",
+        v =>
+          (v && v.length >= 4) ||
+          "Username must be equal or more than 6 characters"
+      ],
+      passRules: [
+        v => !!v || "Password is required",
+        v =>
+          (v && v.length >= 6) ||
+          "Password must be equal or more than 6 characters"
+      ],
+      confirmPassRules: [
+        v => !!v || "Password is required",
+        v => v === this.password || "Password should match"
+      ]
+    };
+  },
+  methods: {
+    onSubmit() {
+      if (this.$refs.form.validate()) {
+        this.register = {
+          username: this.username,
+          password: this.password
+        };
 
-          axios.post(`http://localhost:4002/api/auth/register/`, this.register)
-            .then(response => {
-              this.$router.push({
-                name: 'Login'
-              })
-            })
-            .catch(e => {
-              console.log(e);// eslint-disable-line no-console
-              this.errors.push(e)
-            })
-
-        }
-
+        axios
+          .post(`http://localhost:4002/api/auth/register/`, this.register)
+          .then(response => {
+            this.$router.push({
+              name: "Login"
+            });
+          })
+          .catch(e => {
+            console.log(e); // eslint-disable-line no-console
+            this.errors.push(e);
+          });
       }
     }
   }
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

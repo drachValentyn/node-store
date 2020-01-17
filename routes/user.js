@@ -5,6 +5,7 @@ const User = require('../models/User');
 const passport = require('passport');
 require('../config/passport')(passport);
 
+
 getToken = headers => {
   if (headers && headers.authorization) {
     const parted = headers.authorization.split(' ');
@@ -17,6 +18,7 @@ getToken = headers => {
     return null;
   }
 };
+
 
 /* GET ALL Users */
 router.get('/', passport.authenticate('jwt', { session: false}), function(req, res) {
@@ -38,7 +40,6 @@ router.get('/:id', (req, res, next) => {
     res.json(post)
   })
 });
-
 
 /* SAVE User */
 

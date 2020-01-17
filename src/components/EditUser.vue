@@ -57,7 +57,7 @@ export default {
       user: {},
       name: "",
       login: "",
-      email: "",
+      email: ""
     };
   },
   mixins: [validationMixin],
@@ -121,7 +121,7 @@ export default {
         this.user = {
           name: this.name,
           login: this.login,
-          email: this.email,
+          email: this.email
         };
         axios
           .put(`http://localhost:4002/user/` + this.$route.params.id, this.user)

@@ -2,14 +2,12 @@ const express = require("express");
 const path = require("path");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
 const engines = require("consolidate");
 const cors = require("cors");
 
+const mongoose = require("mongoose");
 mongoose.Promise = require("bluebird");
-
-mongoose
-  .connect("mongodb://localhost/mevn-users", {
+mongoose.connect("mongodb://localhost/mevn-users", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
@@ -20,7 +18,10 @@ mongoose
 
 const user = require("./routes/user");
 const auth = require("./routes/auth");
+const upload = require("./routes/file");
+
 const app = express();
+
 
 app.use(morgan("combined"));
 app.use(bodyParser.json());
@@ -28,9 +29,23 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: "false" }));
 app.use(express.static(path.join(__dirname, "dist")));
 
-app.use('/users', express.static(path.join(__dirname, "dist")));
-app.use('/user', user);
+app.use("/users", express.static(path.join(__dirname, "dist")));
+app.use("/user", user);
 app.use("/api/auth", auth);
+app.use("/uploads", upload);
+
+//if the files size increase more than 500KB
+app.use((err, req, res, next) => {
+  if (err.code === 'LIMIT_FILE_SIZE') {
+    res.status(422).json({ error: 'Allowed file size is 500KB' });
+    return;
+  }
+  if (err.code === 'INCORRECT_FILETYPE') {
+    res.status(422).json({ error: 'Only image are allowed' });
+    return;
+  }
+});
+
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

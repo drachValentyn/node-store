@@ -6,6 +6,9 @@ import EditUser from "@/components/EditUser";
 import ShowUser from "@/components/ShowUser";
 import Login from "@/components/Login";
 import Register from "@/components/Register";
+import Gallery from "@/components/Gallery";
+import UploadImages from '@/components/UploadImages'
+
 
 Vue.use(VueRouter);
 
@@ -31,13 +34,23 @@ const routes = [
     component: EditUser
   },
   {
-    path: '/login',
-    name: 'Login',
+    path: "/gallery",
+    name: "Gallery",
+    component: Gallery
+  },
+  {
+    path: '/upload',
+    name: 'UploadImages',
+    component: UploadImages
+  },
+  {
+    path: "/login",
+    name: "Login",
     component: Login
   },
   {
-    path: '/register',
-    name: 'Register',
+    path: "/register",
+    name: "Register",
     component: Register
   }
 ];

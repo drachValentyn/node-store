@@ -1,8 +1,7 @@
 <template>
-
-    <v-row>
-      <v-container class="grey lighten-5" fluid>
-        <v-col cols="8" class="mx-auto">
+  <v-row>
+    <v-container class="grey lighten-5" fluid>
+      <v-col cols="8" class="mx-auto">
         <v-card class="pa-2" outlined>
           <v-simple-table>
             <h2>User List</h2>
@@ -13,7 +12,7 @@
                   <th class="text-center">Login</th>
                   <th class="text-center">E-mail</th>
                   <th class="text-center">Date</th>
-                  <th/>
+                  <th />
                 </tr>
               </thead>
               <tbody>
@@ -33,9 +32,8 @@
           </v-simple-table>
         </v-card>
       </v-col>
-      </v-container>
-    </v-row>
-
+    </v-container>
+  </v-row>
 </template>
 
 <script>
@@ -55,15 +53,18 @@ export default {
     };
   },
   created() {
-    axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
-    axios.get(`http://localhost:4002/user`)
+    axios.defaults.headers.common["Authorization"] = localStorage.getItem(
+      "jwtToken"
+    );
+    axios
+      .get(`http://localhost:4002/user`)
       .then(response => {
         this.users = response.data;
       })
       .catch(e => {
         this.errors.push(e);
-        if(e.response.status === 401) {
-          this.$router.push('/login')
+        if (e.response.status === 401) {
+          this.$router.push("/login");
         }
       });
   },
