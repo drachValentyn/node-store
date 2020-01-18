@@ -25,3 +25,9 @@ npm run lint
 ### File CSV
 
 public/export/
+
+
+
+### Graphics is in 
+
+localhost/statistic
