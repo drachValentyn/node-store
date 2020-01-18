@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 <template>
   <v-row>
     <v-col cols="12" sm="6" offset-sm="3">
@@ -23,7 +24,10 @@
                       align="center"
                       justify="center"
                     >
-                      <v-progress-circular indeterminate color="grey lighten-5"/>
+                      <v-progress-circular
+                        indeterminate
+                        color="grey lighten-5"
+                      />
                     </v-row>
                   </template>
                 </v-img>
@@ -40,7 +44,8 @@
                 size="md"
                 variant="primary"
                 @click="uploadImages()"
-                class="cursor">
+                class="cursor"
+              >
                 Upload images
               </v-btn>
             </v-col>
@@ -52,57 +57,56 @@
 </template>
 
 <script>
-  import axios from "axios";
-  import { mapGetters } from 'vuex'
+import axios from "axios";
+import { mapGetters } from "vuex";
 
-  export default {
-    name: "Gallery",
-    data() {
-      return {
-        images: [],
-        errors: [],
-      }
-    },
-    computed: {
-      ...mapGetters({
-        user: 'user',
-      })
-    },
-    created () {
-      axios.defaults.headers.common['Authorization'] = localStorage.getItem(
-        'jwtToken'
-      );
-      this.getImages()
-    },
-    methods: {
-      getImages () {
-        axios.get(`http://localhost:4002/uploads`, {
+export default {
+  name: "Gallery",
+  data() {
+    return {
+      images: [],
+      errors: []
+    };
+  },
+  computed: {
+    ...mapGetters({
+      user: "user"
+    })
+  },
+  created() {
+    axios.defaults.headers.common["Authorization"] = localStorage.getItem(
+      "jwtToken"
+    );
+    this.getImages();
+  },
+  methods: {
+    getImages() {
+      axios
+        .get(`http://localhost:4002/uploads`, {
           params: {
             user: this.user.userId
           }
         })
-          .then(response => {
-            this.images = response.data
-          })
-          .catch(e => {
-            this.errors.push(e);
-            if (e.response.status === 401) {
-              this.$router.push({
-                name: 'Login'
-              })
-            }
-          })
-      },
-      uploadImages () {
-        this.$router.push({
-          name: 'UploadImages'
+        .then(response => {
+          this.images = response.data;
+          console.log(this.images);
         })
-      }
+        .catch(e => {
+          this.errors.push(e);
+          if (e.response.status === 401) {
+            this.$router.push({
+              name: "Login"
+            });
+          }
+        });
+    },
+    uploadImages() {
+      this.$router.push({
+        name: "UploadImages"
+      });
     }
-
   }
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

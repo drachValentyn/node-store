@@ -10,8 +10,11 @@
           <router-link to="/" tag="span" class="pointer mr-3"
             >User List</router-link
           >
-          <router-link to="/add-user" tag="span" class="pointer mr-5"
+          <router-link to="/add-user" tag="span" class="pointer mr-3"
             >Add User</router-link
+          >
+          <router-link to="/upload" tag="span" class="pointer mr-5"
+            >Upload media</router-link
           >
 
           <v-btn tag="span" text class="pointer 111" @click="logout()">

@@ -5,7 +5,12 @@
     </h2>
 
     <v-card class="pa-2 mx-auto" outlined max-width="700">
-      <v-form ref="form" v-model="valid" lazy-validation enctype="multipart/form-data">
+      <v-form
+        ref="form"
+        v-model="valid"
+        lazy-validation
+        enctype="multipart/form-data"
+      >
         <v-text-field
           v-model="name"
           prepend-icon="mdi-account"
@@ -46,98 +51,94 @@
         >
           submit
         </v-btn>
-
       </v-form>
-
     </v-card>
   </v-container>
 </template>
 
 <script>
-  import axios from "axios";
-  import {validationMixin} from "vuelidate";
-  import {required, maxLength, email} from "vuelidate/lib/validators";
+import axios from "axios";
+import { validationMixin } from "vuelidate";
+import { required, maxLength, email } from "vuelidate/lib/validators";
 
-  export default {
-    name: "CreateUser",
-    data() {
-      return {
-        valid: false,
-        user: {},
-        name: "",
-        login: "",
-        email: "",
-      };
-    },
-    mixins: [validationMixin],
+export default {
+  name: "CreateUser",
+  data() {
+    return {
+      valid: false,
+      user: {},
+      name: "",
+      login: "",
+      email: ""
+    };
+  },
+  mixins: [validationMixin],
 
-    validations: {
-      name: {
-        required,
-        maxLength: maxLength(10)
-      },
-      login: {
-        required,
-        maxLength: maxLength(10)
-      },
-      email: {
-        required,
-        email
-      }
+  validations: {
+    name: {
+      required,
+      maxLength: maxLength(10)
     },
-    computed: {
-      nameErrors() {
-        const errors = [];
-        if (!this.$v.name.$dirty) return errors;
-        !this.$v.name.maxLength &&
+    login: {
+      required,
+      maxLength: maxLength(10)
+    },
+    email: {
+      required,
+      email
+    }
+  },
+  computed: {
+    nameErrors() {
+      const errors = [];
+      if (!this.$v.name.$dirty) return errors;
+      !this.$v.name.maxLength &&
         errors.push("Name must be at most 10 characters long");
-        !this.$v.name.required && errors.push("Name is required.");
-        return errors;
-      },
-      loginErrors() {
-        const errors = [];
-        if (!this.$v.name.$dirty) return errors;
-        !this.$v.name.maxLength &&
-          errors.push("Login must be at most 10 characters long");
-        !this.$v.name.required && errors.push("Login is required.");
-        return errors;
-      },
-      emailErrors() {
-        const errors = [];
-        if (!this.$v.email.$dirty) return errors;
-        !this.$v.email.email && errors.push("Must be valid e-mail");
-        !this.$v.email.required && errors.push("E-mail is required");
-        return errors;
-      }
+      !this.$v.name.required && errors.push("Name is required.");
+      return errors;
     },
-    methods: {
-
-      async onSubmit() {
-        this.$v.$touch();
-        if (!this.$v.$invalid) {
-          this.user = {
-            name: this.name,
-            login: this.login,
-            email: this.email,
-          };
-          try {
-            await axios.post(`http://localhost:4002/user/`, this.user)
-              .then(res => {
-                this.$router.push({
-                  name: "ShowUser",
-                  params: { id: response.data._id }
-                });
-              })
-              .catch(e => {
-                this.errors.push(e);
+    loginErrors() {
+      const errors = [];
+      if (!this.$v.name.$dirty) return errors;
+      !this.$v.name.maxLength &&
+        errors.push("Login must be at most 10 characters long");
+      !this.$v.name.required && errors.push("Login is required.");
+      return errors;
+    },
+    emailErrors() {
+      const errors = [];
+      if (!this.$v.email.$dirty) return errors;
+      !this.$v.email.email && errors.push("Must be valid e-mail");
+      !this.$v.email.required && errors.push("E-mail is required");
+      return errors;
+    }
+  },
+  methods: {
+    async onSubmit() {
+      this.$v.$touch();
+      if (!this.$v.$invalid) {
+        this.user = {
+          name: this.name,
+          login: this.login,
+          email: this.email
+        };
+        try {
+          await axios
+            .post(`http://localhost:4002/user/`, this.user)
+            .then(res => {
+              this.$router.push({
+                name: "ShowUser",
+                params: { id: res.data._id }
               });
-           } catch (e) {
-             console.log(e)
-           }
-
+            })
+            .catch(e => {
+              this.errors.push(e);
+            });
+        } catch (e) {
+          console.log(e); // eslint-disable-line no-console
         }
       }
     }
-  };
+  }
+};
 </script>
-

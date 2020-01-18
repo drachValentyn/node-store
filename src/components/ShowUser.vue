@@ -9,7 +9,6 @@
         <v-list-item-subtitle>
           <div class="mb-1">Login: {{ users.login }}</div>
           <div class="mb-1">E-mail: {{ users.email }}</div>
-          <div class="mb-1">Role: {{ users.role }}</div>
           <div class="mb-1">Date: {{ users.date }}</div>
         </v-list-item-subtitle>
       </v-list-item-content>

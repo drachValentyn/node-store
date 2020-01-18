@@ -8,6 +8,7 @@ import Login from "@/components/Login";
 import Register from "@/components/Register";
 import Gallery from "@/components/Gallery";
 import UploadImages from '@/components/UploadImages'
+import Statistic from '@/components/Statistic'
 
 
 Vue.use(VueRouter);
@@ -52,6 +53,11 @@ const routes = [
     path: "/register",
     name: "Register",
     component: Register
+  },
+  {
+    path: "/statistic",
+    name: "Statistic",
+    component: Statistic
   }
 ];
 
