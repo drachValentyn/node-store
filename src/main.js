@@ -7,6 +7,7 @@ import vuetify from "./plugins/vuetify";
 Vue.config.productionTip = false;
 Vue.use(Vuex);
 
+
 let store = new Vuex.Store({
   state: {
     user: {},
@@ -17,6 +18,10 @@ let store = new Vuex.Store({
     },
   }
 });
+
+
+import axios from 'axios';
+axios.defaults.baseURL = 'http://localhost:4001';
 
 new Vue({
   router,

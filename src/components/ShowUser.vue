@@ -35,7 +35,7 @@ export default {
   },
   created() {
     axios
-      .get(`http://localhost:4002/user/` + this.$route.params.id)
+      .get(`/user/` + this.$route.params.id)
       .then(response => {
         this.users = response.data;
       })
@@ -45,11 +45,11 @@ export default {
   },
   methods: {
     editUser(userid) {
-      this.$router.push("/edit-user/" + userid);
+      this.$router.push(`/edit-user/` + userid);
     },
     deleteUser(userid) {
       axios
-        .delete("http://localhost:4002/user/" + userid)
+        .delete(`/user/` + userid)
         .then(() => {
           this.$router.push({
             name: "UserList"

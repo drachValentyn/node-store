@@ -82,7 +82,7 @@ export default {
   methods: {
     getImages() {
       axios
-        .get(`http://localhost:4002/uploads`, {
+        .get('/uploads', {
           params: {
             user: this.user.userId
           }

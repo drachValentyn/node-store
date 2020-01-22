@@ -20,4 +20,3 @@ const upload= multer({storage: storage}).single("file");
 
 module.exports= upload;
 
-// this is the config file for multer

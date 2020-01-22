@@ -3,7 +3,6 @@
     <h2 class="text-center">
       Add New User
     </h2>
-
     <v-card class="pa-2 mx-auto" outlined max-width="700">
       <v-form
         ref="form"
@@ -124,7 +123,7 @@ export default {
         };
         try {
           await axios
-            .post(`http://localhost:4002/user/`, this.user)
+            .post(`/user/`, this.user)
             .then(res => {
               this.$router.push({
                 name: "ShowUser",

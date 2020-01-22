@@ -18,11 +18,8 @@ const getToken = headers => {
 };
 
 /* GET ALL Users */
-router.get("/", passport.authenticate("jwt", { session: false }), function(
-  req,
-  res,
-  next
-) {
+router.get("/", passport.authenticate("jwt", {session: false}),
+  (req, res, next) => {
   const token = getToken(req.headers);
   if (token) {
     User.find((err, user) => {
@@ -30,7 +27,7 @@ router.get("/", passport.authenticate("jwt", { session: false }), function(
       res.json(user);
     });
   } else {
-    return res.status(403).send({ success: false, msg: "Unauthorized." });
+    return res.status(403).send({success: false, msg: "Unauthorized."});
   }
 });
 
@@ -43,9 +40,7 @@ router.get("/:id", (req, res, next) => {
 });
 
 /* SAVE User */
-router.post(
-  "/",
-  passport.authenticate("jwt", { session: false }),
+router.post("/", passport.authenticate("jwt", {session: false}),
   (req, res, next) => {
     const token = getToken(req.headers);
     if (token) {
@@ -54,7 +49,7 @@ router.post(
         res.json(post);
       });
     } else {
-      return res.status(403).send({ success: false, msg: "Unauthorized." });
+      return res.status(403).send({success: false, msg: "Unauthorized."});
     }
   }
 );

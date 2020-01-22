@@ -33,6 +33,7 @@ router.post('/register', function(req, res) {
 
 
 router.post('/login', (req, res) =>{
+
   Admin.findOne({
     username: req.body.username
   }, (err, user) => {
@@ -44,10 +45,15 @@ router.post('/login', (req, res) =>{
       // check if password matches
       user.comparePassword(req.body.password,  (err, isMatch) => {
         if (isMatch && !err) {
+          let newUser = {
+            loggedIn: true,
+            userId: user._id,
+          };
           // if user is found and password is right create a token
           const token = jwt.sign(user.toJSON(), settings.secret);
           // return the information including token as JSON
-          res.json({success: true, token: 'JWT ' + token});
+          res.json({success: true, token: 'JWT ' + token, user: newUser});
+
         } else {
           res.status(401).send({success: false, msg: 'Authentication failed. Wrong password.'});
         }

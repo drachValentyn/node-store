@@ -1,6 +1,5 @@
 <template>
   <v-row>
-
     <v-col cols="12" class="text-center" v-if="!user.loggedIn">
       <v-btn text to="/gallery">
         Browse images
@@ -9,6 +8,7 @@
         Upload images
       </v-btn>
     </v-col>
+
 
     <v-col cols="10" class="mx-auto">
       <v-card>
@@ -49,13 +49,10 @@
               :key="i"
               cols="3"
             >
+              <img src="/uploads/file-1579706018073.png" alt="">
               <v-card>
-                <div
-                  class="add-button"
-                  :style="{ 'background-image': 'url(' + '/uploads/' + image.image + ')' }">
-                </div>
                 <v-img
-                  :src=" '/uploads/' + image.image"
+                  :src="image.image"
                   class="white--text align-end"
                   height="200px"
                 >
@@ -80,8 +77,10 @@
         </v-container>
       </v-card>
     </v-col>
+
   </v-row>
 </template>
+
 
 <script>
   import axios from "axios";
@@ -95,7 +94,8 @@
         errors: [],
         file: '',
         loadingText: '',
-        loading: false
+        loading: false,
+        filePath: "/uploads/",
       }
     },
     computed: {
@@ -103,23 +103,23 @@
         user: 'user',
       })
     },
+
     created () {
       axios.defaults.headers.common['Authorization'] = localStorage.getItem(
         'jwtToken'
       );
-      console.log(axios.defaults.headers.common['Authorization']);
       this.getImages()
     },
     methods: {
       getImages () {
-        axios.get(`http://localhost:4002/uploads`, {
+        axios.get(`/uploads`, {
           params: {
             user: this.user.userId
           }
         })
           .then(response => {
+            console.log(response.data);
             this.images = response.data;
-            console.log(this.user.userId)
           })
           .catch(e => {
             this.errors.push(e);
@@ -135,7 +135,6 @@
       },
       updateUploadButton (e) {
         const fileName = e.target.value.split('\\').pop();
-        console.log(fileName);
         if (fileName) {
           this.loadingText = fileName;
           this.loading = true
@@ -146,16 +145,16 @@
         this.file = this.$refs.uploadInput.files[0];
         let formData = new FormData();
         formData.append('file', this.file);
-        axios.post(`http://localhost:4002/uploads`, formData, {
+        axios.post(`/uploads`, formData, {
           params: {
             user: this.user.userId
           }
         })
           .then(response => {
+            console.log(response);
             setTimeout(() => {
               this.loading = false;
               this.getImages();
-              console.log(this.$refs.uploadInput.value);
               this.$refs.uploadInput.value = undefined
             }, 900)
           })
@@ -164,7 +163,7 @@
           })
       },
       deleteImage (image) {
-        axios.delete(`http://localhost:4002/uploads/${image}`)
+        axios.delete(`/uploads/${image}`)
           .then(result => {
             this.getImages()
           })

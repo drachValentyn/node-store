@@ -97,7 +97,7 @@ export default {
       "jwtToken"
     );
     axios
-      .get(`http://localhost:4002/user`)
+      .get('/user')
       .then(response => {
         this.users = response.data;
       })
@@ -107,14 +107,15 @@ export default {
           this.$router.push("/login");
         }
       });
+
   },
   methods: {
     details(userid) {
-      this.$router.push(`/show-user/` + userid);
+      this.$router.push('/show-user/' + userid);
     },
     async exportCsv() {
       await axios
-        .get(`http://localhost:4002/exports`)
+        .get('/exports')
         .then(response => {
           this.exportMessage = `File ${response.data} succesful created!`;
           setTimeout(() => {
@@ -129,27 +130,26 @@ export default {
       this.$refs.uploadInput.click()
     },
     csvJSON(csv){
-      let vm = this
-      let lines = csv.split("\n")
-      let result = []
-      let headers = lines[0].split(",")
+      let lines = csv.split("\n");
+      let result = [];
+      let headers = lines[0].split(",");
 
-      lines.map(function(line, indexLine){
+      lines.map((line, indexLine) => {
         if (indexLine < 1) return;
         let obj = {};
-        let currentline = line.split(",")
+        let currentline = line.split(",");
 
         headers.map(function(header){
           obj['name'] = currentline[1];
           obj['login'] = currentline[2];
           obj['email'] = currentline[3];
-        })
+        });
         result.push(obj)
-      })
+      });
       return result;
     },
     loadCSV(e) {
-      let vm = this
+      let vm = this;
       if (window.FileReader) {
         let reader = new FileReader();
         reader.readAsText(e.target.files[0]);
@@ -169,9 +169,8 @@ export default {
     },
     sendImport(file) {
       axios
-        .post(`http://localhost:4002/exports`, file)
+        .post('/exports', file)
         .then(response => {
-          console.log(response);
           if (response.data.errmsg){
             this.errMessage = response.data.errmsg;
             setTimeout(() => {

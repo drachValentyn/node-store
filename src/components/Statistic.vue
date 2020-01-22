@@ -39,7 +39,7 @@
     },
     methods: {
       fillData () {
-        axios.get(`http://localhost:4002/charts`)
+        axios.get(`/charts`)
           .then(response => {
             let results = response.data.data
             let dateresult = results.map(a => a.date)

@@ -1,12 +1,21 @@
 const express = require("express");
+var favicon = require('serve-favicon');
 const app = express();
 const path = require("path");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const engines = require("consolidate");
 const cors = require("cors");
+require("dotenv").config();
 
+//create route
+const user = require("./routes/user");
+const auth = require("./routes/auth");
+const upload = require("./routes/file");
+const expFile = require("./routes/export");
+//const chart = require("./routes/chart");
 
+//add mongodb
 const mongoose = require("mongoose");
 mongoose.Promise = require("bluebird");
 mongoose
@@ -19,24 +28,28 @@ mongoose
   .then(() => console.log("connection successful")) // eslint-disable-line no-console
   .catch(err => console.error(err)); // eslint-disable-line no-console
 
-const user = require("./routes/user");
-const auth = require("./routes/auth");
-const upload = require("./routes/file");
-const expFile = require("./routes/export");
-const chart = require("./routes/chart");
+//middleware express
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
-app.use(morgan("combined"));
-app.use(bodyParser.json());
 app.use(cors());
+app.use(morgan('dev'));
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: "false" }));
 app.use(express.static(path.join(__dirname, "dist")));
+app.use('/', express.static(path.join(__dirname, 'dist')));
+//uploads Multer folder
 
+app.use(express.static("./uploads"));
 app.use("/users", express.static(path.join(__dirname, "dist")));
 app.use("/user", user);
 app.use("/api/auth", auth);
 app.use("/uploads", upload);
 app.use("/exports", expFile);
-app.use("/charts", chart);
+//app.use("/charts", chart);
 
 //if the files size increase more than 500KB
 app.use((err, req, res, next) => {
@@ -49,7 +62,6 @@ app.use((err, req, res, next) => {
     return;
   }
 });
-
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -66,7 +78,7 @@ app.use((err, req, res) => {
 
   // render the error page
   res.status(err.status || 500);
-  res.render("error");
+  res.sendFile('/dist/error.html', { error: err })
 });
 
 app.engine("html", engines.mustache);
