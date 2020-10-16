@@ -1,6 +1,8 @@
 <template>
   <v-app>
+
     <sp-header/>
+
     <v-content>
       <v-container>
         <router-view/>
@@ -13,8 +15,7 @@
 <script>
   import axios from 'axios'
   import {mapGetters} from 'vuex'
-  import SpHeader from '@/views/Header'
-
+  import SpHeader from '@/views/Header.vue'
   export default {
     data() {
       return {};
@@ -43,7 +44,7 @@
 
 
 <style scoped>
-.pointer {
-  cursor: pointer;
-}
+  .pointer {
+    cursor: pointer;
+  }
 </style>

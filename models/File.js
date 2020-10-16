@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const Image = new Schema({
@@ -9,4 +9,4 @@ const Image = new Schema({
   user: String
 });
 
-module.exports = mongoose.model('Image', Image);
+module.exports = mongoose.model("Image", Image);

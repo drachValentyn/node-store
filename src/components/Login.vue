@@ -81,11 +81,10 @@ export default {
         axios
           .post(`/api/auth/login/`, this.admin)
           .then(response => {
-            console.log(response);
             let user = response.data.user;
             user.loggedIn = response.data.success;
             this.$store.state.user = user;
-            localStorage.setItem('newUser', JSON.stringify(user));
+            localStorage.setItem("newUser", JSON.stringify(user));
             localStorage.setItem("jwtToken", response.data.token);
             this.$router.push("/");
           })

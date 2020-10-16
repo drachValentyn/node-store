@@ -7,9 +7,8 @@ import ShowUser from "@/components/ShowUser";
 import Login from "@/components/Login";
 import Register from "@/components/Register";
 import Gallery from "@/components/Gallery";
-import UploadImages from '@/components/UploadImages'
-import Statistic from '@/components/Statistic'
-
+import UploadImages from "@/components/UploadImages";
+import Statistic from "@/components/Statistic";
 
 Vue.use(VueRouter);
 
@@ -40,8 +39,8 @@ const routes = [
     component: Gallery
   },
   {
-    path: '/upload',
-    name: 'UploadImages',
+    path: "/upload",
+    name: "UploadImages",
     component: UploadImages
   },
   {

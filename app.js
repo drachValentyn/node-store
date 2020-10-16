@@ -1,5 +1,4 @@
 const express = require("express");
-var favicon = require('serve-favicon');
 const app = express();
 const path = require("path");
 const morgan = require("morgan");
@@ -31,16 +30,19 @@ mongoose
 //middleware express
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
   next();
 });
 
 app.use(cors());
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: "false" }));
 app.use(express.static(path.join(__dirname, "dist")));
-app.use('/', express.static(path.join(__dirname, 'dist')));
+app.use("/", express.static(path.join(__dirname, "dist")));
 //uploads Multer folder
 
 app.use(express.static("./uploads"));
@@ -78,7 +80,7 @@ app.use((err, req, res) => {
 
   // render the error page
   res.status(err.status || 500);
-  res.sendFile('/dist/error.html', { error: err })
+  res.sendFile("/dist/error.html", { error: err });
 });
 
 app.engine("html", engines.mustache);

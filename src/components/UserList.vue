@@ -5,7 +5,6 @@
         <v-icon left>mdi-pencil</v-icon>Export User
       </v-btn>
 
-
       <v-btn tile outlined color="primary" @click.prevent="selectCsv()">
         <v-icon left>mdi-pencil</v-icon>Import User
       </v-btn>
@@ -21,21 +20,13 @@
     </v-col>
 
     <v-col cols="5" class="text-center mx-auto">
-      <v-alert
-        dense
-        text
-        v-if="exportMessage"
-        type="success"
-        class="mt-4"
-      >{{exportMessage}}</v-alert>
+      <v-alert dense text v-if="exportMessage" type="success" class="mt-4">{{
+        exportMessage
+      }}</v-alert>
 
-      <v-alert
-        dense
-        text
-        v-if="errMessage"
-        type="error"
-        class="mt-4"
-      >{{errMessage}}</v-alert>
+      <v-alert dense text v-if="errMessage" type="error" class="mt-4">{{
+        errMessage
+      }}</v-alert>
     </v-col>
 
     <v-container class="grey lighten-5" fluid>
@@ -60,7 +51,9 @@
                   <td>{{ user.email }}</td>
                   <td>{{ user.date }}</td>
                   <td>
-                    <v-btn small color="primary" @click.stop="details(user._id)">Edit User</v-btn>
+                    <v-btn small color="primary" @click.stop="details(user._id)"
+                      >Edit User</v-btn
+                    >
                   </td>
                 </tr>
               </tbody>
@@ -87,9 +80,9 @@ export default {
       users: [],
       errors: [],
       parse_csv: [],
-      sortOrders:{},
+      sortOrders: {},
       exportMessage: "",
-      errMessage: "",
+      errMessage: ""
     };
   },
   created() {
@@ -97,7 +90,7 @@ export default {
       "jwtToken"
     );
     axios
-      .get('/user')
+      .get("/user")
       .then(response => {
         this.users = response.data;
       })
@@ -107,15 +100,14 @@ export default {
           this.$router.push("/login");
         }
       });
-
   },
   methods: {
     details(userid) {
-      this.$router.push('/show-user/' + userid);
+      this.$router.push("/show-user/" + userid);
     },
     async exportCsv() {
       await axios
-        .get('/exports')
+        .get("/exports")
         .then(response => {
           this.exportMessage = `File ${response.data} succesful created!`;
           setTimeout(() => {
@@ -126,10 +118,10 @@ export default {
           this.errors.push(e);
         });
     },
-    selectCsv () {
-      this.$refs.uploadInput.click()
+    selectCsv() {
+      this.$refs.uploadInput.click();
     },
-    csvJSON(csv){
+    csvJSON(csv) {
       let lines = csv.split("\n");
       let result = [];
       let headers = lines[0].split(",");
@@ -139,12 +131,12 @@ export default {
         let obj = {};
         let currentline = line.split(",");
 
-        headers.map(function(header){
-          obj['name'] = currentline[1];
-          obj['login'] = currentline[2];
-          obj['email'] = currentline[3];
+        headers.map(function(header) {
+          obj["name"] = currentline[1];
+          obj["login"] = currentline[2];
+          obj["email"] = currentline[3];
         });
-        result.push(obj)
+        result.push(obj);
       });
       return result;
     },
@@ -156,33 +148,32 @@ export default {
         reader.onload = function(event) {
           let csv = event.target.result;
           vm.parse_csv = vm.csvJSON(csv);
-          vm.sendImport(vm.parse_csv)
+          vm.sendImport(vm.parse_csv);
         };
         reader.onerror = function(evt) {
-          if(evt.target.error.name === "NotReadableError") {
+          if (evt.target.error.name === "NotReadableError") {
             alert("Canno't read file !");
           }
         };
       } else {
-        alert('FileReader are not supported in this browser.');
+        alert("FileReader are not supported in this browser.");
       }
     },
     sendImport(file) {
       axios
-        .post('/exports', file)
+        .post("/exports", file)
         .then(response => {
-          if (response.data.errmsg){
+          if (response.data.errmsg) {
             this.errMessage = response.data.errmsg;
             setTimeout(() => {
               this.errMessage = "";
             }, 5000);
           } else {
-            this.exportMessage = 'Uploading data success!';
+            this.exportMessage = "Uploading data success!";
             setTimeout(() => {
               this.exportMessage = "";
             }, 5000);
           }
-
         })
         .catch(e => {
           this.errors.push(e);

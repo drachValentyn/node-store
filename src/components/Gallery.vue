@@ -82,14 +82,13 @@ export default {
   methods: {
     getImages() {
       axios
-        .get('/uploads', {
+        .get("/uploads", {
           params: {
             user: this.user.userId
           }
         })
         .then(response => {
           this.images = response.data;
-          console.log(this.images);
         })
         .catch(e => {
           this.errors.push(e);

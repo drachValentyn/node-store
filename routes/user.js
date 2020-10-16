@@ -18,18 +18,21 @@ const getToken = headers => {
 };
 
 /* GET ALL Users */
-router.get("/", passport.authenticate("jwt", {session: false}),
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
   (req, res, next) => {
-  const token = getToken(req.headers);
-  if (token) {
-    User.find((err, user) => {
-      if (err) return next(err);
-      res.json(user);
-    });
-  } else {
-    return res.status(403).send({success: false, msg: "Unauthorized."});
+    const token = getToken(req.headers);
+    if (token) {
+      User.find((err, user) => {
+        if (err) return next(err);
+        res.json(user);
+      });
+    } else {
+      return res.status(403).send({ success: false, msg: "Unauthorized." });
+    }
   }
-});
+);
 
 /* GET SINGLE User BY ID */
 router.get("/:id", (req, res, next) => {
@@ -40,7 +43,9 @@ router.get("/:id", (req, res, next) => {
 });
 
 /* SAVE User */
-router.post("/", passport.authenticate("jwt", {session: false}),
+router.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
   (req, res, next) => {
     const token = getToken(req.headers);
     if (token) {
@@ -49,7 +54,7 @@ router.post("/", passport.authenticate("jwt", {session: false}),
         res.json(post);
       });
     } else {
-      return res.status(403).send({success: false, msg: "Unauthorized."});
+      return res.status(403).send({ success: false, msg: "Unauthorized." });
     }
   }
 );

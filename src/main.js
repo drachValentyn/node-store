@@ -1,31 +1,28 @@
 import Vue from "vue";
-import Vuex from 'vuex'
+import Vuex from "vuex";
 import App from "./App.vue";
+import axios from "axios";
 import router from "./router";
 import vuetify from "./plugins/vuetify";
 
 Vue.config.productionTip = false;
 Vue.use(Vuex);
 
-
 let store = new Vuex.Store({
   state: {
-    user: {},
+    user: {}
   },
   getters: {
     user: state => {
-      return state.user
-    },
+      return state.user;
+    }
   }
 });
-
-
-import axios from 'axios';
-axios.defaults.baseURL = 'http://localhost:4001';
+axios.defaults.baseURL = "http://localhost:4001";
 
 new Vue({
   router,
-  vuetify,
   store,
+  vuetify,
   render: h => h(App)
 }).$mount("#app");
